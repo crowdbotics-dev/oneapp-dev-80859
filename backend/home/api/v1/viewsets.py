@@ -1,3 +1,7 @@
+from rest_framework import viewsets
+from home.models import Stroyboard,Studdio
+from .serializers import StroyboardSerializer,StuddioSerializer
+from rest_framework import authentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
@@ -28,3 +32,13 @@ class LoginViewSet(ViewSet):
         token, created = Token.objects.get_or_create(user=user)
         user_serializer = UserSerializer(user)
         return Response({"token": token.key, "user": user_serializer.data})
+
+class StuddioViewSet(viewsets.ModelViewSet):
+    serializer_class = StuddioSerializer
+    authentication_classes = (authentication.SessionAuthentication, authentication.TokenAuthentication)
+    queryset = Studdio.objects.all()
+
+class StroyboardViewSet(viewsets.ModelViewSet):
+    serializer_class = StroyboardSerializer
+    authentication_classes = (authentication.SessionAuthentication, authentication.TokenAuthentication)
+    queryset = Stroyboard.objects.all()
